@@ -1,3 +1,50 @@
 <h1>
   {{title}}
 </h1>
+<table>
+  <thead>
+  <tr>
+    <th>Titre</th>
+    <th>Auteur</th>
+    <th>Prix</th>
+    <th>Quantité</th>
+    <th>Montant</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of rows" [class.big]="isBig(row)">
+    <td>{{row.title}}</td>
+    <td>{{row.author}}</td>
+    <td class="right">{{row.price | currency :'EUR':true}}</td>
+    <td class="right">
+      <input min="0" [(ngModel)]="row.quantity" type="number">
+    </td>
+    <td class="right">{{row.amount() |currency :'EUR':true}}</td>
+    <td><button (click)="remove(row)">Supprimer</button></td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="4">Total</td>
+    <td class="right">{{total() |currency :'EUR':true}}</td>
+    <td></td>
+  </tr>
+  </tfoot>
+</table>
+
+<h2>Ajout manuel</h2>
+<form>
+  <label>Titre    <input></label>
+  <label>Auteur   <input></label>
+  <label>Prix     <input></label>
+  <label>Quantité <input></label>
+  <input type="submit" value="Ajouter">
+</form>
+
+<h2>Ajout depuis le catalogue</h2>
+<form>
+  <label>Livre<select></select></label>
+  <label>Quantité <input></label>
+  <input type="submit" value="Ajouter">
+</form>
