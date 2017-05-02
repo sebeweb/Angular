@@ -33,18 +33,34 @@
   </tfoot>
 </table>
 
-<h2>Ajout manuel</h2>
-<form>
-  <label>Titre    <input></label>
-  <label>Auteur   <input></label>
-  <label>Prix     <input></label>
-  <label>Quantité <input></label>
-  <input type="submit" value="Ajouter">
+<h2>Ajout (<input type="checkbox" [(ngModel)]="manualMode">en mode manuel)</h2>
+<form (ngSubmit)="manualAdd()" #formInfo="ngForm" *ngIf="manualMode">
+  <label>Titre
+    <input name="title" type="text" [(ngModel)]="manualFormData.title" required>
+  </label>
+  <label>Auteur
+    <input name="author" type="text" [(ngModel)]="manualFormData.author" required>
+  </label>
+  <label>Prix
+    <input name="price" step="0.01" type="number" [(ngModel)]="manualFormData.price" required>
+  </label>
+  <label>Quantité
+    <input name="quantity" type="number" [(ngModel)]="manualFormData.quantity" required>
+  </label>
+  <input type="submit" value="Ajouter" [disabled]="formInfo.invalid">
 </form>
 
-<h2>Ajout depuis le catalogue</h2>
-<form>
-  <label>Livre<select></select></label>
-  <label>Quantité <input></label>
+<form (ngSubmit)="catalogAdd()" *ngIf="!manualMode">
+  <label>Livre
+    <select name="selected" [(ngModel)]="catalogFormData.selected">
+      <option *ngFor="let book of books$ | async" [ngValue]="book">
+        {{book.title}}
+      </option>
+    </select>
+  </label>
+  <label>Quantité
+    <input name="quantity" type="number" [(ngModel)]="catalogFormData.quantity" required>
+  </label>
   <input type="submit" value="Ajouter">
 </form>
+<!--<pre>{{books$ | async | json}}</pre>-->
